@@ -44,7 +44,7 @@ public class AudioController {
     }
     
     public void stop(){
-        
+        clip.stop();
     }
     
 }

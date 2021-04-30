@@ -30,14 +30,17 @@ public class GraphicController extends JPanel {
     private int pipeID;
     private int score = 0;
     private AudioController scoreUp;
-    private AudioController backgroundMusic;
+    public AudioController backgroundMusic;
     private FontController fontController = new FontController();
-    private Font scoreFont = fontController.createFont("src\\media\\fonts\\8-bit-pusab.ttf");
+    private Font scoreFont = fontController.createFont("src\\media\\fonts\\8-bit-pusab.ttf",30);
+    private Font restartFont = fontController.createFont("src\\media\\fonts\\8-bit-pusab.ttf",15);
+    public boolean gameOn = false;
     
     public GraphicController() throws UnsupportedAudioFileException, IOException, IOException, LineUnavailableException, LineUnavailableException {
         this.scoreUp = new AudioController("src\\media\\Audio\\SFX\\point.wav",0.7);
         this.backgroundMusic = new AudioController("src\\media\\audio\\music\\background.wav",0.25);
         backgroundMusic.play();
+        
     }
     
     public void paintComponent(Graphics graphics){
@@ -51,6 +54,7 @@ public class GraphicController extends JPanel {
         drawBackground();
         //drawGrid();
         drawPoints();
+        drawInitMessage();
         try {
             drawBird();
         } catch (InterruptedException ex) {
@@ -87,52 +91,74 @@ public class GraphicController extends JPanel {
      
         graphicPainter.drawImage(bird.getSprite(), bird.getXSpawn(), bird.getYPosition(), null);
         
-        if(bird.getYPosition() >= 500){
-            bird.die();
-            drawLoseMessage();
-        }else{
-            bird.moveBird();
-            bird.collider.updateCollider(bird.collider.x, bird.getYPosition(), bird.collider.width, bird.collider.height);
-            if(bird.collider.onCollision(pipe.lowerPipeCollider) | bird.collider.onCollision(pipe.upperPipeCollider)){
+        if(gameOn){
+            if(bird.getYPosition() >= 500){
                 bird.die();
-                if(!bird.isAlive()){
-                    drawLoseMessage();
-                }
+                drawLoseMessage();
             }else{
-            }
+                bird.moveBird();
+                bird.collider.updateCollider(bird.collider.x, bird.getYPosition(), bird.collider.width, bird.collider.height);
+                if(bird.collider.onCollision(pipe.lowerPipeCollider) | bird.collider.onCollision(pipe.upperPipeCollider)){
+                    bird.die();
+                }
+            } 
         }
-        
         repaint();
     }
     
     public void drawLoseMessage(){
-        graphicPainter.drawString("Game Over!", 180, 250);
+
+        graphicPainter.setColor(new Color(50,50,50));
+        graphicPainter.fillRect(120, 200, 400, 125);
+        graphicPainter.setColor(Color.WHITE);
+        graphicPainter.drawString("Game Over", 180, 250);
+        graphicPainter.setFont(restartFont);
+        graphicPainter.drawString("Presiona    para reiniciar.", 140, 300);
+        graphicPainter.setColor(Color.GREEN);
+        graphicPainter.drawString("R", 268, 300);
+    }
+    
+    public void drawInitMessage(){
+        if(!gameOn){
+            graphicPainter.setColor(new Color(50,50,50));
+            graphicPainter.fillRect(80, 400, 450, 125);
+            graphicPainter.setColor(Color.WHITE);
+            graphicPainter.setFont(restartFont);
+            graphicPainter.drawString("Presiona                  para saltar.", 100, 475);
+            graphicPainter.setColor(Color.GREEN);
+            graphicPainter.drawString("ESPACIO", 230, 475);           
+        }
+
     }
     
     public void drawPoints(){
-        graphicPainter.setFont(this.scoreFont);
-        graphicPainter.drawString(String.valueOf(this.score), 300, 100);
+        if(gameOn){
+            graphicPainter.setFont(this.scoreFont);
+            graphicPainter.drawString(String.valueOf(this.score), 300, 100);        
+        }
     }
     
     public void drawPipes(){
         
         
-        if(pipeOnScreen == false){
-            pipeID = (int) (Math.random()*3);        
-            pipe = new PipePair(pipesTemplate[pipeID].getUpperPipePath(),pipesTemplate[pipeID].getLowerPipePath(), 600);
-            pipeOnScreen = true;
-        }
-        
-        if(pipe.getPipesXPosition() >= -100){
-            graphicPainter.drawImage(pipe.getUpperPipeSprite(),pipe.getPipesXPosition(),pipe.getUpperPipeYSpawn(),null);
-            graphicPainter.drawImage(pipe.getLowerPipeSprite(),pipe.getPipesXPosition(),pipe.getLowerPipeYSpawn(),null);
-            if(bird.isAlive()){
-                pipe.movePipes();
+        if(gameOn){
+            if(pipeOnScreen == false){
+                pipeID = (int) (Math.random()*3);        
+                pipe = new PipePair(pipesTemplate[pipeID].getUpperPipePath(),pipesTemplate[pipeID].getLowerPipePath(), 600);
+                pipeOnScreen = true;
             }
-        }else{
-            scoreUp.play();
-            score++;
-            pipeOnScreen = false;
+        
+            if(pipe.getPipesXPosition() >= -100){
+                graphicPainter.drawImage(pipe.getUpperPipeSprite(),pipe.getPipesXPosition(),pipe.getUpperPipeYSpawn(),null);
+                graphicPainter.drawImage(pipe.getLowerPipeSprite(),pipe.getPipesXPosition(),pipe.getLowerPipeYSpawn(),null);
+                if(bird.isAlive()){
+                    pipe.movePipes();
+                }
+            }else{
+                scoreUp.play();
+                score++;
+                pipeOnScreen = false;
+            }
         }
     }
     

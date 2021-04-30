@@ -5,6 +5,8 @@
  */
 package gameroom;
 
+import Snake.Juego;
+
 /**
  *
  * @author ccubi
@@ -12,7 +14,8 @@ package gameroom;
 public class GameRoom {
 
     public static void main(String[] args) {
-        System.out.println("pvto");
+        Juego j = new Juego();
+        j.setVisible(true);
     }
     
 }

@@ -2,6 +2,17 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/flappybird/entities/Bird.java</file>
+            <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/flappybird/playerController/PlayerController.java</file>
+            <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/flappybird/audioController/AudioController.java</file>
+            <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/flappybird/graphics/MainFrame.java</file>
+            <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/GameRoom.java</file>
+            <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/Snake/Personaje.java</file>
+            <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/flappybird/graphics/FontController.java</file>
+            <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/flappybird/Main.java</file>
+            <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/Snake/Juego.java</file>
+            <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/flappybird/graphics/GraphicController.java</file>
+        </group>
     </open-files>
 </project-private>

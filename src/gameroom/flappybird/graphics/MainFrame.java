@@ -14,7 +14,7 @@ public class MainFrame extends JFrame {
     PlayerController playerController;
     
     public MainFrame() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
-        this.playerController = new PlayerController(graphicController);
+        this.playerController = new PlayerController(graphicController,this) {};
         this.setResizable(false);
         this.setTitle("Not Flappy Bird");
         this.setSize(615,630); // Hay que dejar un margen de 15 px a lo ancho y 30 px a lo alto
