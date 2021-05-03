@@ -21,7 +21,6 @@ public class MainFrame extends JFrame {
         this.setResizable(false);
         this.setTitle("Not Flappy Bird");
         this.setSize(615,630); // Hay que dejar un margen de 15 px a lo ancho y 30 px a lo alto
-        System.out.println("esto se repite?");
         this.setVisible(true);
         this.addKeyListener(playerController);
         this.add(graphicController);

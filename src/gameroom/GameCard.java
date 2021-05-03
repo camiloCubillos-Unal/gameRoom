@@ -1,25 +1,19 @@
 package gameroom;
 
 import Snake.Juego;
-import gameroom.flappybird.Main;
-import gameroom.flappybird.graphics.MainFrame;
 import java.awt.Color;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.awt.Cursor;
+import javafx.scene.input.KeyCode;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JPanel;
-import juego.Principal;
 
 public class GameCard extends JButton {
     
@@ -90,13 +84,13 @@ public class GameCard extends JButton {
     private void openGame() throws UnsupportedAudioFileException, IOException, LineUnavailableException, InterruptedException{
         switch(this.game){
             case("not_flappy_bird"):
-                MainFrame ma = new MainFrame();
+                gameroom.flappybird.graphics.MainFrame maf = new gameroom.flappybird.graphics.MainFrame();
                 break;
             case("snake"):
                 Juego j = new Juego();
                 break;
             case("pacman"):
-                juego.Juego p = new juego.Juego();
+                gameroom.pacman.graphics.MainFrame map = new gameroom.pacman.graphics.MainFrame();
                 break;
         }
     }
