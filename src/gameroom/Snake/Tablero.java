@@ -16,6 +16,7 @@ public class Tablero extends JPanel{
         this.numU = numU;
         this.tamU = tamT/numU;
         this.marco = tamT%numU;
+        this.setBackground(Color.BLACK);
     }
     
     @Override

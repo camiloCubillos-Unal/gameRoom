@@ -6,6 +6,11 @@
 package gameroom;
 
 import Snake.Juego;
+import gameroom.flappybird.Main;
+import gameroom.flappybird.graphics.MainFrame;
+import java.io.IOException;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  *
@@ -13,9 +18,10 @@ import Snake.Juego;
  */
 public class GameRoom {
 
-    public static void main(String[] args) {
-        Juego j = new Juego();
-        j.setVisible(true);
+    public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        //Juego mainFrame = new Juego(); 
+        GameMenu gameMenu = new GameMenu();
+        
     }
     
 }

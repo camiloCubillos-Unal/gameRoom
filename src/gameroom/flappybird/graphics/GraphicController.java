@@ -49,6 +49,7 @@ public class GraphicController extends JPanel {
         graphicPainter = (Graphics2D) graphics;
         graphicPainter.setFont(new Font(null, Font.PLAIN, 20));
         
+        drawBushes();
         drawPipes();
         drawGround();
         drawBackground();
@@ -73,6 +74,14 @@ public class GraphicController extends JPanel {
     
     private void drawBackground(){
         this.setBackground(new Color(163,231,255));       
+    }
+    
+    private void drawBushes(){
+        for (int i = 0; i < 600; i += 60) {
+            ImageIcon bushIcon = new ImageIcon("src\\media\\img\\bush.png");
+            Image bush = bushIcon.getImage();
+            graphicPainter.drawImage(bush,i,500,null);
+        }
     }
     
     private void drawGrid(){
@@ -113,7 +122,7 @@ public class GraphicController extends JPanel {
         graphicPainter.setColor(Color.WHITE);
         graphicPainter.drawString("Game Over", 180, 250);
         graphicPainter.setFont(restartFont);
-        graphicPainter.drawString("Presiona    para reiniciar.", 140, 300);
+        graphicPainter.drawString("Presiona    para reiniciar.", 135, 300); // La fuente se distorsiona al exportar. Por eso hay que mover un poco el texto
         graphicPainter.setColor(Color.GREEN);
         graphicPainter.drawString("R", 268, 300);
     }
@@ -124,7 +133,7 @@ public class GraphicController extends JPanel {
             graphicPainter.fillRect(80, 400, 450, 125);
             graphicPainter.setColor(Color.WHITE);
             graphicPainter.setFont(restartFont);
-            graphicPainter.drawString("Presiona                  para saltar.", 100, 475);
+            graphicPainter.drawString("Presiona                  para saltar.", 95, 475); // La fuente se distorsiona al exportar. Por eso hay que mover un poco el texto
             graphicPainter.setColor(Color.GREEN);
             graphicPainter.drawString("ESPACIO", 230, 475);           
         }
