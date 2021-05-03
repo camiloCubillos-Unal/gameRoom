@@ -19,6 +19,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import juego.Principal;
 
 public class GameCard extends JButton {
     
@@ -93,6 +94,9 @@ public class GameCard extends JButton {
                 break;
             case("snake"):
                 Juego j = new Juego();
+                break;
+            case("pacman"):
+                juego.Juego p = new juego.Juego();
                 break;
         }
     }

@@ -22,7 +22,7 @@ public class GameMenu extends JFrame{
         
         GameCard g1 = new GameCard("not_flappy_bird","src\\media\\img\\testIcon.png",0,0);
         GameCard g2 = new GameCard("snake","src\\media\\img\\testIcon2.png",200,0);
-        GameCard g3 = new GameCard("","src\\media\\img\\comingSoon.png",400,0);
+        GameCard g3 = new GameCard("pacman","src\\media\\img\\testIcon3.png",400,0);
         GameCard g4 = new GameCard("","src\\media\\img\\comingSoon.png",0,200);
         GameCard g5 = new GameCard("","src\\media\\img\\comingSoon.png",200,200);
         GameCard g6 = new GameCard("","src\\media\\img\\comingSoon.png",400,200);
