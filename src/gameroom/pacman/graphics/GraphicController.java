@@ -25,10 +25,12 @@ import javax.swing.JTextArea;
 public class GraphicController extends JPanel {
     
     private Graphics2D graphicPainter;
+    private FontController fontController;
     private PlayerController playerController;
     public Pacman pacman;
     private Image brick;
     private Image galleta;
+    private Font scoreFont;
     
     int map[][] = {{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                    {1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
@@ -48,9 +50,11 @@ public class GraphicController extends JPanel {
     
     public GraphicController(PlayerController _playerController){
         this.playerController = _playerController;
+        this.fontController = new FontController();
         pacman = new Pacman("src\\media\\img\\Pacman_right.png", 224, 416,this.playerController,this.map);
         brick = new ImageIcon("src\\media\\img\\brick.png").getImage();
         galleta = new ImageIcon("src\\media\\img\\galleta2.png").getImage();
+        scoreFont = fontController.createFont("src\\media\\fonts\\8-bit-pusab.ttf",10);
     }
     
     public void paintComponent(Graphics _graphics){
@@ -64,7 +68,7 @@ public class GraphicController extends JPanel {
             drawPacman();
             //drawGrid();
             drawScore();
-            Thread.sleep(16);
+            Thread.sleep(14);
         } catch (InterruptedException ex) {
             Logger.getLogger(GraphicController.class.getName()).log(Level.SEVERE, null, ex);
         }                
@@ -75,7 +79,7 @@ public class GraphicController extends JPanel {
         this.setBackground(Color.BLACK);
     }
     
-    private void drawPacman(){
+    private void drawPacman() throws InterruptedException{
         
         graphicPainter.drawImage(pacman.getSprite(),pacman.getXPosition(),pacman.getYPosition(),null);
         pacman.move();
@@ -113,6 +117,8 @@ public class GraphicController extends JPanel {
     }
     
     private void drawScore(){
-        graphicPainter.drawString("Score: ", 32, 448);
+        graphicPainter.setColor(Color.white);
+        graphicPainter.setFont(scoreFont);
+        graphicPainter.drawString(String.format("Score: %s",pacman.getScore()), 32, 25);
     }
 }

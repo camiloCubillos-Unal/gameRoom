@@ -7,8 +7,10 @@ import javax.swing.ImageIcon;
 public class Pacman {
 
     PlayerController playerController;
+    int score = 0;
     
     Image sprite;
+    int spritePosition;
     int xPosition;
     int yPosition;
     int leftCollider;
@@ -25,6 +27,7 @@ public class Pacman {
     
     public Pacman(String _spritePath, int _xSpawn, int _ySpawn, PlayerController _playerController, int _map[][]){
         this.sprite = new ImageIcon(_spritePath).getImage();
+        this.spritePosition = 1;
         this.xPosition = _xSpawn;
         this.yPosition = _ySpawn;
         this.leftCollider = _xSpawn;
@@ -40,8 +43,9 @@ public class Pacman {
     
     // Methods
     
-    public void move(){
+    public void move() throws InterruptedException{
         
+        pacmanAnimation();
         
         int col = this.getXPosition();
         int row = this.getYPosition();
@@ -51,7 +55,10 @@ public class Pacman {
             col = col / 32;
             row = row / 32;
             
-            map[row][col] = 2;
+            if(map[row][col] == 0){
+                setScore(getScore() + 10);
+                map[row][col] = 2;
+            }
             
             if(map[row][col-1] == 1){speedX = 0;}
             if(map[row][col+1] == 1){speedX = 0;}
@@ -63,7 +70,7 @@ public class Pacman {
                 if(map[row][col-1] != 1){
                     speedX = -2;
                     speedY = 0;
-                    setSprite("src\\media\\img\\Pacman_left.png");
+                    setSprite(String.format("src\\media\\img\\pacman_%s_left.png", this.spritePosition));
                 }else{
                     speedX = 0;
                 }
@@ -72,7 +79,7 @@ public class Pacman {
                 if(map[row-1][col] != 1){
                     speedY = -2;
                     speedX = 0;
-                    setSprite("src\\media\\img\\Pacman_up.png");
+                    setSprite(String.format("src\\media\\img\\pacman_%s_up.png", this.spritePosition));
                 }else{
                     speedY = 0;
                 }
@@ -81,7 +88,7 @@ public class Pacman {
                 if(map[row][col+1] != 1){
                     speedX = 2;
                     speedY = 0;
-                    setSprite("src\\media\\img\\Pacman_right.png");
+                    setSprite(String.format("src\\media\\img\\pacman_%s_right.png", this.spritePosition));
                 }else{    
                     speedX = 0;
                     }
@@ -90,7 +97,7 @@ public class Pacman {
                 if(map[row+1][col] != 1){
                     speedY = 2;
                     speedX = 0;                   
-                    setSprite("src\\media\\img\\Pacman_down.png");
+                    setSprite(String.format("src\\media\\img\\pacman_%s_down.png", this.spritePosition));
                 }else{
                     speedY = 0;
                 }
@@ -98,8 +105,8 @@ public class Pacman {
             }
             
         }
-        System.out.println("Velocidad X: "+speedX);
-        System.out.println("Velocidad Y: "+speedY);
+        //System.out.println("Velocidad X: "+speedX);
+        //System.out.println("Velocidad Y: "+speedY);
         this.setXPosition(this.getXPosition() + speedX);
         this.setYPosition(this.getYPosition() + speedY);
         /*System.out.println("X: "+this.getXPosition());
@@ -111,7 +118,26 @@ public class Pacman {
         
     }
     
+    private void pacmanAnimation() throws InterruptedException{
+        
+        switch(this.spritePosition){
+            case 1:
+                this.spritePosition = 2;
+                break;
+            case 2:
+                this.spritePosition = 3;
+                break;
+            case 3:
+                this.spritePosition = 1;
+                break;
+        }
+    }
+    
     // Getters
+    
+    public int getScore(){
+        return this.score;
+    }
     
     public Image getSprite(){
         return this.sprite;
@@ -134,6 +160,10 @@ public class Pacman {
     }
     
     // Setters
+    
+    public void setScore(int _newScore){
+        this.score = _newScore;
+    }
     
     public void setXPosition(int _newXPosition){
         this.xPosition = _newXPosition;
