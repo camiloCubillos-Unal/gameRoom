@@ -5,14 +5,11 @@
         <group>
             <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/pacman/graphics/GraphicController.java</file>
             <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/flappybird/graphics/MainFrame.java</file>
-            <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/pacman/graphics/MainFrame.java</file>
-            <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/pacman/graphics/FontController.java</file>
             <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/Snake/Tablero.java</file>
-            <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/pacman/playerController/PlayerController.java</file>
             <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/flappybird/graphics/FontController.java</file>
+            <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/pacman/graphics/MatrixController.java</file>
             <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/pacman/entities/Pacman.java</file>
             <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/Snake/Juego.java</file>
-            <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/pacman/audioController/AudioController.java</file>
             <file>file:/C:/Users/ccubi/Documents/NetBeansProjects/gameRoom/src/gameroom/flappybird/graphics/GraphicController.java</file>
         </group>
     </open-files>

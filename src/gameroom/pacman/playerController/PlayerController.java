@@ -8,6 +8,7 @@ public class PlayerController implements KeyListener{
 
     int keyPressed = 0;
     int auxKeyPressed = 0;
+    int score = 0;
     
     @Override
     public void keyTyped(KeyEvent e) {
@@ -21,11 +22,19 @@ public class PlayerController implements KeyListener{
 
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println("Aa");
+        
     }
     
     public int getKey(){
         return this.keyPressed;    
+    }
+    
+    public void setScore(int _newScore){
+        this.score = _newScore;
+    }
+    
+    public int getScore(){
+        return this.score;
     }
     
 }

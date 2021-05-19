@@ -12,9 +12,13 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
@@ -25,36 +29,53 @@ import javax.swing.JTextArea;
 public class GraphicController extends JPanel {
     
     private Graphics2D graphicPainter;
+    private MatrixController matrixController;
     private FontController fontController;
     private PlayerController playerController;
     public Pacman pacman;
     private Image brick;
     private Image galleta;
     private Font scoreFont;
+    private boolean firstGeneration;
     
     int map[][] = {{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                    {1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
-                   {1,0,1,1,1,1,0,1,0,1,1,1,1,0,1},
                    {1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
-                   {1,1,1,0,1,1,0,1,0,1,1,0,1,1,1},
-                   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                   {1,0,1,0,1,0,1,0,1,0,1,0,1,0,1},
-                   {1,0,1,0,1,0,0,0,0,0,1,0,1,0,1},
-                   {1,0,0,0,1,0,1,0,1,0,1,0,0,0,1},
-                   {1,0,1,0,0,0,1,0,1,0,0,0,1,0,1},
-                   {1,0,1,1,1,0,1,0,1,0,1,1,1,0,1},
-                   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-                   {1,0,1,1,1,1,1,0,1,1,1,1,1,0,1},
-                   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                   {1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
+                   {1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
+                   {1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
+                   {1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
+                   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+                   {1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
+                   {1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
+                   {1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
+                   {1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
+                   {1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
+                   {1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
                    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
     
     public GraphicController(PlayerController _playerController){
         this.playerController = _playerController;
         this.fontController = new FontController();
-        pacman = new Pacman("src\\media\\img\\Pacman_right.png", 224, 416,this.playerController,this.map);
+        pacman = new Pacman("src\\media\\img\\Pacman_right.png", 224, 384,this.playerController,this.map);
         brick = new ImageIcon("src\\media\\img\\brick.png").getImage();
         galleta = new ImageIcon("src\\media\\img\\galleta2.png").getImage();
         scoreFont = fontController.createFont("src\\media\\fonts\\8-bit-pusab.ttf",10);
+        matrixController = new MatrixController();
+        
+        JButton nextMapBtn = new JButton("Siguiente Mapa");
+        nextMapBtn.setBounds(10,10,100,100);
+        nextMapBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                restartGeneration();
+            }
+        });
+        //this.add(nextMapBtn);        
+    }
+    
+    private void restartGeneration(){
+        this.firstGeneration = false;
     }
     
     public void paintComponent(Graphics _graphics){
@@ -65,14 +86,80 @@ public class GraphicController extends JPanel {
         try {
             drawBackground();
             drawWalls();
+            if(!firstGeneration){
+                generateMap();
+            }
             drawPacman();
             //drawGrid();
             drawScore();
+            checkCookiesAmount();
             Thread.sleep(14);
         } catch (InterruptedException ex) {
             Logger.getLogger(GraphicController.class.getName()).log(Level.SEVERE, null, ex);
         }                
         
+    }
+    
+    private void checkCookiesAmount(){
+        int cookiesAmount = matrixController.getZeroes(map);
+        if(cookiesAmount == 0){
+            this.firstGeneration = false;
+        }
+    }
+    
+    private void generateMap(){
+        int randomPattern;
+        int randomRotation;
+        int[][] pattern;
+        
+        pacman.setXPosition(224);
+        pacman.setYPosition(384);
+
+        // leftSide map
+        
+        randomPattern = ThreadLocalRandom.current().nextInt(0, matrixController.patterns.length);
+        randomRotation = ThreadLocalRandom.current().nextInt(1,5);
+        pattern = matrixController.rotateMatrix(matrixController.patterns[randomPattern], randomRotation);
+        matrixController.composeMatrix(map, pattern, 1);
+        pattern = matrixController.reflexMatrix(pattern);
+        matrixController.composeMatrix(map, pattern, 2);
+        
+        // rightSide map
+        
+        randomPattern = ThreadLocalRandom.current().nextInt(0, matrixController.patterns.length);
+        randomRotation = ThreadLocalRandom.current().nextInt(1,5);
+        pattern = matrixController.rotateMatrix(matrixController.patterns[randomPattern], randomRotation);
+        matrixController.composeMatrix(map, pattern, 3);
+        pattern = matrixController.reflexMatrix(pattern);
+        matrixController.composeMatrix(map, pattern, 4);
+        
+        // Draw pathCrosses
+            
+        // leftCross
+            
+        map[6][2] = 0; map[6][5] = 0;
+        map[7][2] = 0; map[7][5] = 0;
+        map[8][2] = 0; map[8][5] = 0;
+            
+        // upCross
+            
+        map[2][6] = 0; map[5][6] = 0;
+        map[2][7] = 0; map[5][7] = 0;
+        map[2][8] = 0; map[5][8] = 0;
+            
+        // rightCross
+            
+        map[6][9] = 0; map[6][12] = 0;
+        map[7][9] = 0; map[7][12] = 0;
+        map[8][9] = 0; map[8][12] = 0;
+           
+        // downCross
+            
+        map[9][6] = 0; map[12][6] = 0;
+        map[9][7] = 0; map[12][7] = 0;
+        map[9][8] = 0; map[12][8] = 0;
+        
+        firstGeneration = true;
     }
     
     private void drawBackground(){
@@ -119,6 +206,6 @@ public class GraphicController extends JPanel {
     private void drawScore(){
         graphicPainter.setColor(Color.white);
         graphicPainter.setFont(scoreFont);
-        graphicPainter.drawString(String.format("Score: %s",pacman.getScore()), 32, 25);
+        graphicPainter.drawString(String.format("Score: %s",playerController.getScore()), 32, 25);
     }
 }

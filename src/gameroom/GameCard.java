@@ -42,7 +42,6 @@ public class GameCard extends JButton {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(e.getClickCount() == 1){
-                    System.out.println("xd");
                     try {
                         openGame();
                     } catch (UnsupportedAudioFileException ex) {

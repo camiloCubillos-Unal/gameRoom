@@ -1,4 +1,4 @@
-package gameroom.pacman.entities;
+    package gameroom.pacman.entities;
 
 import gameroom.pacman.playerController.PlayerController;
 import java.awt.Image;
@@ -7,8 +7,6 @@ import javax.swing.ImageIcon;
 public class Pacman {
 
     PlayerController playerController;
-    int score = 0;
-    
     Image sprite;
     int spritePosition;
     int xPosition;
@@ -56,7 +54,7 @@ public class Pacman {
             row = row / 32;
             
             if(map[row][col] == 0){
-                setScore(getScore() + 10);
+                playerController.setScore(playerController.getScore() + 10);
                 map[row][col] = 2;
             }
             
@@ -135,10 +133,6 @@ public class Pacman {
     
     // Getters
     
-    public int getScore(){
-        return this.score;
-    }
-    
     public Image getSprite(){
         return this.sprite;
     }
@@ -160,10 +154,6 @@ public class Pacman {
     }
     
     // Setters
-    
-    public void setScore(int _newScore){
-        this.score = _newScore;
-    }
     
     public void setXPosition(int _newXPosition){
         this.xPosition = _newXPosition;
