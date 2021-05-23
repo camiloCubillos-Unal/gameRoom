@@ -1,5 +1,5 @@
 
-package gameroom.flappybird.entities;
+package gameroom.pacman.entities;
 
 import java.util.List;
 import java.util.ArrayList;

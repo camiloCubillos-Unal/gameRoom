@@ -5,16 +5,20 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class Pacman {
-
+    
+    public Collider collider = new Collider();
     PlayerController playerController;
     Image sprite;
     int spritePosition;
     int xPosition;
+    int xSpawn;
     int yPosition;
+    int ySpawn;
     int leftCollider;
     int rightCollider;
     int upperCollider;
     int downCollider;
+    int lifes;
     
     int map[][];
     public int refXPosition;
@@ -27,7 +31,9 @@ public class Pacman {
         this.sprite = new ImageIcon(_spritePath).getImage();
         this.spritePosition = 1;
         this.xPosition = _xSpawn;
+        this.xSpawn = _xSpawn;
         this.yPosition = _ySpawn;
+        this.ySpawn = _ySpawn;
         this.leftCollider = _xSpawn;
         this.rightCollider = _xSpawn + 32;
         this.upperCollider = _ySpawn;
@@ -36,6 +42,8 @@ public class Pacman {
         this.map = _map;
         this.refXPosition = _xSpawn + 14;
         this.refYPosition = _ySpawn + 14;
+        this.collider.newCollider(_xSpawn, _ySpawn, 32, 32);
+        this.lifes = 3;
         
     }
     
@@ -113,7 +121,7 @@ public class Pacman {
                 System.out.println("row: "+row);
                 System.out.println(map[row-1][col]);*/
         
-        
+        this.collider.updateCollider(this.xPosition, this.yPosition, 32, 32);
     }
     
     private void pacmanAnimation() throws InterruptedException{
@@ -149,8 +157,20 @@ public class Pacman {
         return this.xPosition;
     }
     
+    public int getXSpawn(){
+        return this.xSpawn;
+    }
+    
     public int getYPosition(){
         return this.yPosition;
+    }
+    
+    public int getYSpawn(){
+        return this.ySpawn;
+    }
+    
+    public int getLifes(){
+        return this.lifes;
     }
     
     // Setters
@@ -166,5 +186,14 @@ public class Pacman {
     public void setSprite(String _spritePath){
         this.sprite = new ImageIcon(_spritePath).getImage();
     }
+    
+     public void setSprite(Image _newSprite){
+        this.sprite = _newSprite;
+    }
+     
+    public void setLifes(int _newLifesAmount){
+        this.lifes = _newLifesAmount;
+    }
+    
     
 }
