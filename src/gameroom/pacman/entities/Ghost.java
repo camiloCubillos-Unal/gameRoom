@@ -8,6 +8,7 @@ package gameroom.pacman.entities;
 import java.awt.Image;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.ImageIcon;
 
@@ -21,6 +22,8 @@ public class Ghost {
     int speedY;
     List<String> movements = new ArrayList<String>();
     
+    boolean moving = false;
+    
     public Ghost(String _spritePath, int _xSpawnPosition, int _ySpawnPosition){
         this.sprite = new ImageIcon(_spritePath).getImage();
         this.xPosition = _xSpawnPosition;
@@ -28,50 +31,71 @@ public class Ghost {
         this.collider.newCollider(_xSpawnPosition, _ySpawnPosition, 32, 32);
     }    
     
-    private boolean rayTraceBrick(int[][] map,int[] init, int[] objective,String axis){
-        
-        // Retorna true si encuentra algun ladrillo.
-        
-        boolean brickEncounter = false;
-        
-        switch(axis){
-            
-            case "horizontal":
+    private boolean checkMovesavailability(){   
+        System.out.println("[!] Revisando disponibilidad de movimientos");
+        for(int i = 0; i < this.movements.size(); i++){
+            if(this.movements.get(i) != "-"){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private void printVector(List<String> _vector){
+        for(int i = 0; i < _vector.size();i++){
+           System.out.println(_vector.get(i));
+        }
+    }
+    
+    private List<String> countSteps(int[][] _map, int _initX, int _initY){
 
-                for (int i = init[0] / 32; i <= objective[0] / 32 + 1; i++) {
-                    if(map[init[1] / 32][i] == 1){
-                        System.out.println(String.format("Ladrillo en: [ %s , %s ]", i , init[1] / 32));
-                        brickEncounter = true;
-                    }else{
-                        System.out.println(String.format("No hay ladrillo en: [ %s , %s ]", i, init[1] / 32));
-                    }
+        /*
+            GENERAR DIRECCIÓN RANDOM
+            1 - ARRIBA
+            2 - DERECHA
+            3 - ABAJO
+            4 - IZQUIERDA
+        */
+        
+        int direction = ThreadLocalRandom.current().nextInt(1,5);
+        System.out.println("Direccion: "+direction);
+        //int direction = 2;
+        int xCell = _initX / 32;
+        int yCell = _initY / 32;
+        List<String> newMovements = new ArrayList<String>();
+        
+        switch(direction){
+            case 1:
+                while(_map[yCell - 1][xCell] != 1){
+                    newMovements.add("u");
+                    yCell--;
                 }
                 break;
                 
-                
-            // REVISAR LA PARTE VERTICAL DE LA DETECCIÓN DE LADRILLOS
-                
-            case "vertical":
-                
-                int distanceY = Math.abs(objective[1] / 32 - init[1] / 32);
-                
-                System.out.println(init[1]/32);
-                System.out.println(distanceY);
-                
-                for (int i = init[1] / 32; i <= objective[1] / 32; i++) {
-                    
-                    if(map[init[0] / 32][i] == 1){
-                        System.out.println(String.format("Ladrillo en: [ %s , %s ]", init[1] / 32 , i));
-                        brickEncounter = true;
-                    }else{
-                        System.out.println(String.format("No hay ladrillo en: [ %s , %s ]",init[1] / 32 , i));
-                    }
+            case 2:
+                while(_map[yCell][xCell + 1] != 1){
+                    System.out.println("Block type: "+_map[yCell][xCell + 1]);
+                    newMovements.add("r");
+                    xCell++;
                 }
+                break;
                 
+            case 3:
+                while(_map[yCell + 1][xCell] != 1){
+                    newMovements.add("d");
+                    yCell++;
+                }
+                break;
+                
+            case 4:
+                while(_map[yCell][xCell - 1] != 1){
+                    newMovements.add("l");
+                    xCell--;
+                }
                 break;
         }
-        
-        return brickEncounter;
+        System.out.println("MOVEMENTS SIZE: " + newMovements.size());
+        return newMovements;
     }
     
     private List<String> findPath(int[][] map,int _xInit,int _yInit, int _xObjective, int _yObjective){
@@ -80,12 +104,29 @@ public class Ghost {
     
     public void move(int[][] map){
         
+
+        
         if(this.xPosition % 32 == 0 & this.yPosition % 32 == 0) {
-            
+         System.out.println("X: " + this.xPosition + " " + this.xPosition / 32);
+        System.out.println("Y: " +this.yPosition + " " + this.yPosition / 32);
+        printVector(movements);
+        
+        if(!moving){
+            this.movements = countSteps(map, this.xPosition, this.yPosition);
+            if(this.movements.size() > 0){
+                moving = true;
+            }
+        }
+        
+        if(!checkMovesavailability()){
+            moving = false;
+        }           
+            /*
             int[] positionCoordenates = {this.xPosition, this.yPosition};
-            int[] objectiveCoordenates = {32*1,32*9};
+            int[] objectiveCoordenates = {32*1,32*10};
             
             rayTraceBrick(map, positionCoordenates, objectiveCoordenates, "vertical");
+            */
             
             for (int i = 0; i < movements.size(); i++) { 
                 if(movements.get(i) != "-"){

@@ -18,6 +18,7 @@ public class GameMenu extends JFrame{
     public GameMenu(){
         
         JTextArea ta = new JTextArea();
+        
         JPanel mainPanel = new CustomPanel("src\\media\\img\\testBackground.png");
         
         GameCard g1 = new GameCard("not_flappy_bird","src\\media\\img\\testIcon.png",0,0);
