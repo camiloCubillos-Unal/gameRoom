@@ -21,6 +21,7 @@ public class Ghost {
     int speedX;
     int speedY;
     List<String> movements = new ArrayList<String>();
+    int previousDirection;
     
     boolean moving = false;
     
@@ -29,6 +30,7 @@ public class Ghost {
         this.xPosition = _xSpawnPosition;
         this.yPosition = _ySpawnPosition;
         this.collider.newCollider(_xSpawnPosition, _ySpawnPosition, 32, 32);
+        previousDirection = 1; //Valor inicial. No correspoonde a ninguna dirección.
     }    
     
     private boolean checkMovesavailability(){   
@@ -53,49 +55,58 @@ public class Ghost {
             GENERAR DIRECCIÓN RANDOM
             1 - ARRIBA
             2 - DERECHA
-            3 - ABAJO
-            4 - IZQUIERDA
+            -1 - ABAJO
+            -2 - IZQUIERDA
         */
         
-        int direction = ThreadLocalRandom.current().nextInt(1,5);
+        int direction = ThreadLocalRandom.current().nextInt(-2,3);
         System.out.println("Direccion: "+direction);
-        //int direction = 2;
         int xCell = _initX / 32;
         int yCell = _initY / 32;
         List<String> newMovements = new ArrayList<String>();
         
-        switch(direction){
-            case 1:
-                while(_map[yCell - 1][xCell] != 1){
-                    newMovements.add("u");
-                    yCell--;
-                }
-                break;
+        if(direction != (this.previousDirection * -1)){
+        
+            switch(direction){
+                case 1:
+                    while(_map[yCell - 1][xCell] != 1){
+                        newMovements.add("u");
+                        yCell--;
+                    }
+                    break;
                 
-            case 2:
-                while(_map[yCell][xCell + 1] != 1){
-                    System.out.println("Block type: "+_map[yCell][xCell + 1]);
-                    newMovements.add("r");
-                    xCell++;
-                }
-                break;
+                case 2:
+                    while(_map[yCell][xCell + 1] != 1){
+                        System.out.println("Block type: "+_map[yCell][xCell + 1]);
+                        newMovements.add("r");
+                        xCell++;
+                    }
+                    break;
                 
-            case 3:
-                while(_map[yCell + 1][xCell] != 1){
-                    newMovements.add("d");
-                    yCell++;
-                }
-                break;
+                case -1:
+                    while(_map[yCell + 1][xCell] != 1){
+                        newMovements.add("d");
+                        yCell++;
+                    }
+                    break;
                 
-            case 4:
-                while(_map[yCell][xCell - 1] != 1){
-                    newMovements.add("l");
-                    xCell--;
-                }
-                break;
+                case -2:
+                    while(_map[yCell][xCell - 1] != 1){
+                        newMovements.add("l");
+                        xCell--;
+                    }
+                    break;
+            
+                case 0:
+                    break;
+            }
+            System.out.println("MOVEMENTS SIZE: " + newMovements.size());
+            return newMovements;
         }
-        System.out.println("MOVEMENTS SIZE: " + newMovements.size());
+        
+        this.previousDirection = direction;
         return newMovements;
+        
     }
     
     private List<String> findPath(int[][] map,int _xInit,int _yInit, int _xObjective, int _yObjective){
@@ -107,8 +118,8 @@ public class Ghost {
 
         
         if(this.xPosition % 32 == 0 & this.yPosition % 32 == 0) {
-         System.out.println("X: " + this.xPosition + " " + this.xPosition / 32);
-        System.out.println("Y: " +this.yPosition + " " + this.yPosition / 32);
+        //System.out.println("X: " + this.xPosition + " " + this.xPosition / 32);
+        //System.out.println("Y: " +this.yPosition + " " + this.yPosition / 32);
         printVector(movements);
         
         if(!moving){

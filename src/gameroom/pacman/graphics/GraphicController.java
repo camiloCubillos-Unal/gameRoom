@@ -5,6 +5,8 @@
  */
 package gameroom.pacman.graphics;
 
+import gameroom.pacman.audioController.AudioController;
+import gameroom.pacman.entities.Ghost;
 import gameroom.pacman.playerController.PlayerController;
 import gameroom.pacman.entities.Pacman;
 import java.awt.Color;
@@ -14,9 +16,12 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -30,12 +35,17 @@ public class GraphicController extends JPanel {
     
     private Graphics2D graphicPainter;
     private MatrixController matrixController;
+    private AudioController deathSound;
     private FontController fontController;
     private PlayerController playerController;
     public Pacman pacman;
+    public Ghost redGhost;
+    public Ghost blueGhost;
+    public Ghost orangeGhost;
     private Image brick;
     private Image galleta;
-    private Font scoreFont;
+    public Image lifesSprite;
+    private Font _8bitFont;
     private boolean firstGeneration;
     
     int map[][] = {{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -54,14 +64,19 @@ public class GraphicController extends JPanel {
                    {1,0,0,0,0,0,0,1,0,0,0,0,0,0,1},
                    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
     
-    public GraphicController(PlayerController _playerController){
+    public GraphicController(PlayerController _playerController) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         this.playerController = _playerController;
         this.fontController = new FontController();
         pacman = new Pacman("src\\media\\img\\Pacman_right.png", 224, 384,this.playerController,this.map);
+        redGhost = new Ghost("src\\media\\img\\redGhost.png",64,224);
+        blueGhost = new Ghost("src\\media\\img\\blueGhost.png",224,64);
+        orangeGhost = new Ghost("src\\media\\img\\orangeGhost.png",384,224);
         brick = new ImageIcon("src\\media\\img\\brick.png").getImage();
         galleta = new ImageIcon("src\\media\\img\\galleta2.png").getImage();
-        scoreFont = fontController.createFont("src\\media\\fonts\\8-bit-pusab.ttf",10);
+        lifesSprite = new ImageIcon("src\\media\\img\\lifes.png").getImage();
+        _8bitFont = fontController.createFont("src\\media\\fonts\\8-bit-pusab.ttf",10);
         matrixController = new MatrixController();
+        deathSound = new AudioController("src\\media\\Audio\\SFX\\pacman_death.wav", 0.30);
         
         JButton nextMapBtn = new JButton("Siguiente Mapa");
         nextMapBtn.setBounds(10,10,100,100);
@@ -82,6 +97,9 @@ public class GraphicController extends JPanel {
         
         super.paintComponent(_graphics);
         graphicPainter = (Graphics2D) _graphics;
+
+        graphicPainter.setFont(_8bitFont);
+        graphicPainter.setColor(Color.WHITE);
         
         try {
             drawBackground();
@@ -90,7 +108,10 @@ public class GraphicController extends JPanel {
                 generateMap();
             }
             drawPacman();
+            drawGhosts();
             //drawGrid();
+            checkGhostCollisions();
+            drawLifes();
             drawScore();
             checkCookiesAmount();
             Thread.sleep(14);
@@ -175,6 +196,65 @@ public class GraphicController extends JPanel {
         
     }
     
+private void checkGhostCollisions() throws InterruptedException{
+    
+        if(this.pacman.collider.onCollision(this.redGhost.collider)){
+            deathSound.play();
+            this.pacman.setLifes(this.pacman.getLifes() - 1);
+            this.pacman.setXPosition(this.pacman.getXSpawn());
+            this.pacman.setYPosition(this.pacman.getYSpawn());
+        }
+        
+        if(this.pacman.collider.onCollision(this.blueGhost.collider)){
+            deathSound.play();
+            this.pacman.setLifes(this.pacman.getLifes() - 1);
+            this.pacman.setXPosition(this.pacman.getXSpawn());
+            this.pacman.setYPosition(this.pacman.getYSpawn());
+        }
+        
+        if(this.pacman.collider.onCollision(this.orangeGhost.collider)){
+            deathSound.play();
+            this.pacman.setLifes(this.pacman.getLifes() - 1);
+            this.pacman.setXPosition(this.pacman.getXSpawn());
+            this.pacman.setYPosition(this.pacman.getYSpawn());
+        }
+        
+        if(this.pacman.getLifes() <= 0){
+                graphicPainter.drawString("GAME OVER", 190, 250);
+                this.pacman.setSprite("");
+        }
+    }
+
+    
+    private void drawLifes(){
+        
+        graphicPainter.setFont(_8bitFont);
+        graphicPainter.setColor(Color.WHITE);
+        graphicPainter.drawString("Lifes: ",320,25);
+        if(this.pacman.getLifes() >= 3){
+            graphicPainter.drawImage(lifesSprite, 432, 12, this);
+        }
+        if(this.pacman.getLifes() >= 2){
+            graphicPainter.drawImage(lifesSprite, 412, 12, this);
+        }
+        if(this.pacman.getLifes() >= 1){
+            graphicPainter.drawImage(lifesSprite, 392, 12, this);
+        }
+    }
+    
+    private void drawGhosts(){
+        
+        graphicPainter.drawImage(redGhost.getSprite(),redGhost.getXPosition(),redGhost.getYPosition(),null);
+        graphicPainter.drawImage(blueGhost.getSprite(),blueGhost.getXPosition(),blueGhost.getYPosition(),null);
+        graphicPainter.drawImage(orangeGhost.getSprite(),orangeGhost.getXPosition(),orangeGhost.getYPosition(),null);
+        
+        redGhost.move(map);
+        blueGhost.move(map);
+        orangeGhost.move(map);
+        
+        repaint();
+    }
+    
     private void drawWalls(){       
         
         for (int row = 0; row < map.length; row++) {
@@ -205,7 +285,7 @@ public class GraphicController extends JPanel {
     
     private void drawScore(){
         graphicPainter.setColor(Color.white);
-        graphicPainter.setFont(scoreFont);
+        graphicPainter.setFont(_8bitFont);
         graphicPainter.drawString(String.format("Score: %s",playerController.getScore()), 32, 25);
     }
 }

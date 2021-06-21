@@ -63,7 +63,7 @@ public class GraphicControllerTest extends JPanel {
         this.playerController = _playerController;
         this.fontController = new FontController();
         pacman = new Pacman("src\\media\\img\\Pacman_right.png", 416, 224,this.playerController,this.map);
-        redGhost = new Ghost("src\\media\\img\\redGhost.png",32,224);
+        redGhost = new Ghost("src\\media\\img\\redGhost.png",64,224);
         lifesSprite = new ImageIcon("src\\media\\img\\lifes.png").getImage();
         brick = new ImageIcon("src\\media\\img\\brick.png").getImage();
         galleta = new ImageIcon("src\\media\\img\\galleta2.png").getImage();
