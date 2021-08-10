@@ -1,12 +1,15 @@
 
-package Snake;
+package gameroom.Snake;
 
 import java.awt.Color;
+import gameroom.bdGestor.Bd_gestor;
 import java.awt.Graphics;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JFrame;
 
 public class Personaje extends JPanel{
     
@@ -23,11 +26,18 @@ public class Personaje extends JPanel{
     Thread thr;
     Frecuencia vel;
     
-    public Personaje(int tamT, int numU) {
+    JFrame jframe;
+    String username;
+    Bd_gestor bdGestor;
+    
+    
+    public Personaje(int tamT, int numU,JFrame _jframe, String _username) {
         this.tamT = tamT;
         this.numU = numU;
         this.tamU = tamT/numU;
         this.marco = tamT%numU;
+        this.jframe = _jframe;
+        this.username = _username;
         
         int[] a={numU/2-1, numU/2-1};
         int[] b={numU/2, numU/2-1};
@@ -38,6 +48,8 @@ public class Personaje extends JPanel{
         vel=new Frecuencia(this);
         thr=new Thread(vel);
         thr.start();
+        
+        bdGestor = new Bd_gestor("ueizgfjgoc2gxumn","u22yMCtXEBlTA4pMsMjI");
     }
     
     @Override
@@ -53,7 +65,7 @@ public class Personaje extends JPanel{
         pintura.fillRect(marco/2+fruta[0]*tamU, marco/2+fruta[1]*tamU, tamU-1, tamU-1);
     }
     
-    public void moverVibora(){
+    public void moverVibora() throws ClassNotFoundException, SQLException{
         NueDireccion();
         int[] cuerpo = vibora.get(vibora.size()-1);
         int sx=0;
@@ -77,8 +89,9 @@ public class Personaje extends JPanel{
         }
         
         if(viva){
-            JOptionPane.showMessageDialog(null, "GAME OVER: "+score, "Snake", -1);
-            System.exit(0);
+            JOptionPane.showMessageDialog(null, "Puntaje: "+score, "GAME OVER", -1);
+            bdGestor.updateScore("snake", username, score);
+            this.jframe.dispose();
         }
         if(pos[0]==fruta[0] && pos[1]==fruta[1]){
             vibora.add(pos);

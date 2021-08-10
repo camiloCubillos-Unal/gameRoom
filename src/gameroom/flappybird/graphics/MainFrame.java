@@ -13,10 +13,13 @@ import javax.swing.*;
 public class MainFrame extends JFrame {
     
     
-    GraphicController graphicController = new GraphicController();
+    GraphicController graphicController;
     PlayerController playerController;
+    String username;
     
-    public MainFrame() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
+    public MainFrame(String _username) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
+        this.username = _username;
+        this.graphicController = new GraphicController(_username);
         this.playerController = new PlayerController(graphicController,this) {};
         this.setResizable(false);
         this.setTitle("Not Flappy Bird");

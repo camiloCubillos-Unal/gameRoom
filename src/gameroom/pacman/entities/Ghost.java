@@ -17,7 +17,9 @@ public class Ghost {
     public Collider collider = new Collider();
     Image sprite;
     int xPosition;
+    int xSpawn;
     int yPosition;
+    int ySpawn;
     int speedX;
     int speedY;
     List<String> movements = new ArrayList<String>();
@@ -28,7 +30,9 @@ public class Ghost {
     public Ghost(String _spritePath, int _xSpawnPosition, int _ySpawnPosition){
         this.sprite = new ImageIcon(_spritePath).getImage();
         this.xPosition = _xSpawnPosition;
+        this.xSpawn = _xSpawnPosition;
         this.yPosition = _ySpawnPosition;
+        this.ySpawn = _ySpawnPosition;
         this.collider.newCollider(_xSpawnPosition, _ySpawnPosition, 32, 32);
         previousDirection = 1; //Valor inicial. No correspoonde a ninguna dirección.
     }    
@@ -132,12 +136,6 @@ public class Ghost {
         if(!checkMovesavailability()){
             moving = false;
         }           
-            /*
-            int[] positionCoordenates = {this.xPosition, this.yPosition};
-            int[] objectiveCoordenates = {32*1,32*10};
-            
-            rayTraceBrick(map, positionCoordenates, objectiveCoordenates, "vertical");
-            */
             
             for (int i = 0; i < movements.size(); i++) { 
                 if(movements.get(i) != "-"){

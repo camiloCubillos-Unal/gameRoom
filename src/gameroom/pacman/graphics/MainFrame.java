@@ -27,11 +27,10 @@ public class MainFrame extends JFrame {
     PlayerController playerController;
     AudioController pacmanSFX;
     
-    public MainFrame() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
+    public MainFrame(String _username) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         this.playerController = new PlayerController();
-        this.graphicController = new GraphicController(playerController);
-        //this.graphicControllerTest = new GraphicControllerTest(playerController);
         this.pacmanSFX = new AudioController("src\\media\\Audio\\SFX\\waka-waka.wav", 0.30);
+        this.graphicController = new GraphicController(playerController,_username,pacmanSFX);
         this.addKeyListener(playerController);
         this.setBounds(400,100,497,520);
         this.setTitle("Pacman");

@@ -16,6 +16,8 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import gameroom.bdGestor.Bd_gestor;
+import java.sql.SQLException;
 
 public class GraphicController extends JPanel {
     
@@ -35,10 +37,14 @@ public class GraphicController extends JPanel {
     private Font scoreFont = fontController.createFont("src\\media\\fonts\\8-bit-pusab.ttf",30);
     private Font restartFont = fontController.createFont("src\\media\\fonts\\8-bit-pusab.ttf",15);
     public boolean gameOn = false;
+    private Bd_gestor bdGestor;
+    public String username;
     
-    public GraphicController() throws UnsupportedAudioFileException, IOException, IOException, LineUnavailableException, LineUnavailableException {
+    public GraphicController(String _username) throws UnsupportedAudioFileException, IOException, IOException, LineUnavailableException, LineUnavailableException {
         this.scoreUp = new AudioController("src\\media\\Audio\\SFX\\point.wav",0.7);
         this.backgroundMusic = new AudioController("src\\media\\audio\\music\\background.wav",0.25);
+        this.bdGestor = new Bd_gestor("ueizgfjgoc2gxumn","u22yMCtXEBlTA4pMsMjI");
+        this.username = _username;
         backgroundMusic.play();
         
     }
@@ -59,6 +65,10 @@ public class GraphicController extends JPanel {
         try {
             drawBird();
         } catch (InterruptedException ex) {
+            Logger.getLogger(GraphicController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(GraphicController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
             Logger.getLogger(GraphicController.class.getName()).log(Level.SEVERE, null, ex);
         }
         //drawColliders();
@@ -96,7 +106,7 @@ public class GraphicController extends JPanel {
         }
     }
     
-    private void drawBird() throws InterruptedException{
+    private void drawBird() throws InterruptedException, ClassNotFoundException, SQLException{
      
         graphicPainter.drawImage(bird.getSprite(), bird.getXSpawn(), bird.getYPosition(), null);
         
@@ -104,6 +114,7 @@ public class GraphicController extends JPanel {
             if(bird.getYPosition() >= 500){
                 bird.die();
                 drawLoseMessage();
+                submitScore();
             }else{
                 bird.moveBird();
                 bird.collider.updateCollider(bird.collider.x, bird.getYPosition(), bird.collider.width, bird.collider.height);
@@ -113,6 +124,10 @@ public class GraphicController extends JPanel {
             } 
         }
         repaint();
+    }
+    
+    private void submitScore() throws ClassNotFoundException, SQLException{
+        bdGestor.updateScore("not_flappy_bird",this.username,this.score);
     }
     
     public void drawLoseMessage(){

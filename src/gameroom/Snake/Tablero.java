@@ -1,5 +1,5 @@
 
-package Snake;
+package gameroom.Snake;
 
 import java.awt.Color;
 import java.awt.Graphics;

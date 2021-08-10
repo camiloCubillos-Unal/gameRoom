@@ -26,9 +26,11 @@ public abstract class PlayerController implements KeyListener{
     private GraphicController graphicController;
     private AudioController birdJump;
     private JFrame mainFrame;
+    private String username;
 
     public PlayerController(GraphicController _graphicController, JFrame _mainFrame) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         this.graphicController = _graphicController;
+        this.username = this.graphicController.username;
         this.birdJump = new AudioController("src\\media\\audio\\sfx\\bird_jump.wav",0.6);
         this.mainFrame = _mainFrame;
     }
@@ -59,7 +61,7 @@ public abstract class PlayerController implements KeyListener{
                     graphicController.backgroundMusic.stop();
                     this.mainFrame.dispose();
                     try {
-                        MainFrame newGame = new MainFrame();
+                        MainFrame newGame = new MainFrame(this.username);
                     } catch (UnsupportedAudioFileException ex) {
                         Logger.getLogger(PlayerController.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (IOException ex) {

@@ -9,6 +9,6 @@ public class Main {
 
     
     public static void main(String args[]) throws UnsupportedAudioFileException, UnsupportedAudioFileException, IOException, LineUnavailableException{
-        MainFrame mainFrame = new MainFrame(); 
+         
     }
 }
