@@ -11,7 +11,6 @@ import java.lang.String;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import sun.swing.table.DefaultTableCellHeaderRenderer;
 import gameroom.bdGestor.Bd_gestor;
 import java.sql.SQLException;
 import javax.swing.JFrame;
@@ -50,7 +49,7 @@ public class RankingScreen extends javax.swing.JFrame {
         
         // Alinear en el centro el contenido de las columnas.
                  
-        this.cellRenderer = new DefaultTableCellHeaderRenderer();
+        this.cellRenderer = new javax.swing.table.DefaultTableCellRenderer();
         cellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         this.table_scores.getColumnModel().getColumn(0).setCellRenderer(cellRenderer);
         this.table_scores.getColumnModel().getColumn(1).setCellRenderer(cellRenderer);

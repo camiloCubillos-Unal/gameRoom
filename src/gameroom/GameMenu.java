@@ -6,6 +6,7 @@
 package gameroom;
 
 import gameroom.bdGestor.Bd_gestor;
+import gameroom.cardgame.gui.PlayGame;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.io.IOException;
@@ -48,6 +49,8 @@ public class GameMenu extends javax.swing.JFrame {
         gameList.add("not_flappy_bird");
         gameList.add("pacman");
         gameList.add("snake");
+        gameList.add("cardgame");
+        gameList.add("pong");
 
         gameIndex = 0;
 
@@ -95,7 +98,7 @@ public class GameMenu extends javax.swing.JFrame {
             }
         });
 
-        btn_leftArrow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/img/left-arrow.png"))); // NOI18N
+        btn_leftArrow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/img/left-arrow-disabled.png"))); // NOI18N
         btn_leftArrow.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btn_leftArrow.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -168,6 +171,7 @@ public class GameMenu extends javax.swing.JFrame {
             case ("not_flappy_bird"): {
                 try {
                     gameroom.flappybird.graphics.MainFrame maf = new gameroom.flappybird.graphics.MainFrame(username);
+                    break;
                 } catch (UnsupportedAudioFileException ex) {
                     Logger.getLogger(GameMenu.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
@@ -176,7 +180,6 @@ public class GameMenu extends javax.swing.JFrame {
                     Logger.getLogger(GameMenu.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            break;
 
             case ("snake"):
                 gameroom.Snake.Juego j = new gameroom.Snake.Juego(username);
@@ -184,6 +187,7 @@ public class GameMenu extends javax.swing.JFrame {
             case ("pacman"): {
                 try {
                     gameroom.pacman.graphics.MainFrame map = new gameroom.pacman.graphics.MainFrame(username);
+                    break;
                 } catch (UnsupportedAudioFileException ex) {
                     Logger.getLogger(GameMenu.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
@@ -192,7 +196,25 @@ public class GameMenu extends javax.swing.JFrame {
                     Logger.getLogger(GameMenu.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            break;
+            
+            case ("cardgame"): {
+                gameroom.cardgame.gui.PlayGame mcardgame = new gameroom.cardgame.gui.PlayGame(username);
+                mcardgame.setLocationRelativeTo(null);
+                mcardgame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                mcardgame.setVisible(true);
+                break;
+            }
+            
+            case ("pong"):{
+                gameroom.Pong.pongfor1.Graficos mpong = new gameroom.Pong.pongfor1.Graficos(username);
+                mpong.setLocationRelativeTo(null);
+                mpong.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                mpong.setVisible(true);
+                break;
+            }
+            
+            default:
+                break;
 
         }
     }//GEN-LAST:event_btn_gameActionPerformed
@@ -202,6 +224,19 @@ public class GameMenu extends javax.swing.JFrame {
             gameIndex++;
             String iconPath = String.format("src\\media\\img\\%s.png", gameList.get(gameIndex));
             btn_game.setIcon(new ImageIcon(iconPath));
+
+            // Configurar flechas del menu como objetos con interacción
+            btn_rightArrow.setIcon(new ImageIcon("src\\media\\img\\right-arrow.png"));
+            btn_rightArrow.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            btn_leftArrow.setIcon(new ImageIcon("src\\media\\img\\left-arrow.png"));
+            btn_leftArrow.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        }
+
+        // Desactivar boton derecho en el limite superior de la lista de juegos
+        if (gameIndex == gameList.size() - 1) {
+            btn_rightArrow.setIcon(new ImageIcon("src\\media\\img\\right-arrow-disabled.png"));
+            btn_rightArrow.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
     }//GEN-LAST:event_btn_rightArrowMousePressed
 
@@ -210,6 +245,19 @@ public class GameMenu extends javax.swing.JFrame {
             gameIndex--;
             String iconPath = String.format("src\\media\\img\\%s.png", gameList.get(gameIndex));
             btn_game.setIcon(new ImageIcon(iconPath));
+
+            // Configurar flechas del menu como objetos con interacción
+            btn_rightArrow.setIcon(new ImageIcon("src\\media\\img\\right-arrow.png"));
+            btn_rightArrow.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            btn_leftArrow.setIcon(new ImageIcon("src\\media\\img\\left-arrow.png"));
+            btn_leftArrow.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        }
+
+        // Desactivar boton izquierdo en el limite inferior de la lista de juegos
+        if (gameIndex == 0) {
+            btn_leftArrow.setIcon(new ImageIcon("src\\media\\img\\left-arrow-disabled.png"));
+            btn_leftArrow.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
     }//GEN-LAST:event_btn_leftArrowMousePressed
 
