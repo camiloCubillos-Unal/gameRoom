@@ -1,6 +1,7 @@
 
 package gameroom.Snake;
 
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,7 +18,13 @@ public class Frecuencia implements Runnable{
     public void run() {
         
       while(frecuencia){
-        snake.moverVibora();
+          try {
+              snake.moverVibora();
+          } catch (ClassNotFoundException ex) {
+              Logger.getLogger(Frecuencia.class.getName()).log(Level.SEVERE, null, ex);
+          } catch (SQLException ex) {
+              Logger.getLogger(Frecuencia.class.getName()).log(Level.SEVERE, null, ex);
+          }
         snake.repaint();
         try {
             Thread.sleep(125);
