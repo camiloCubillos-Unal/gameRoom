@@ -24,7 +24,7 @@ public class VFondo extends javax.swing.JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         
-        Image im = new ImageIcon(getClass().getResource("../imagenes/fondo.JPG")).getImage();
+        Image im = new ImageIcon(getClass().getResource("/gameroom/cardgame/imagenes/fondo.JPG")).getImage();
         g.drawImage(im, 0, 0, getWidth(), getHeight(), null);
         setOpaque(false);
         setVisible(true);

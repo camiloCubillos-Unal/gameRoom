@@ -3,6 +3,7 @@ package gameroom.Snake;
 
 import java.awt.Color;
 import gameroom.bdGestor.Bd_gestor;
+import gameroom.bdGestor.ThreadedTransaction;
 import java.awt.Graphics;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,7 +29,8 @@ public class Personaje extends JPanel{
     
     JFrame jframe;
     String username;
-    Bd_gestor bdGestor;
+    ThreadedTransaction threadedTransaction;
+    boolean threadedTransactionRunning = false;
     
     
     public Personaje(int tamT, int numU,JFrame _jframe, String _username) {
@@ -48,8 +50,6 @@ public class Personaje extends JPanel{
         vel=new Frecuencia(this);
         thr=new Thread(vel);
         thr.start();
-        
-        bdGestor = new Bd_gestor("ueizgfjgoc2gxumn","u22yMCtXEBlTA4pMsMjI");
     }
     
     @Override
@@ -90,7 +90,11 @@ public class Personaje extends JPanel{
         
         if(viva){
             JOptionPane.showMessageDialog(null, "Puntaje: "+score, "GAME OVER", -1);
-            bdGestor.updateScore("snake", username, score);
+            if(!threadedTransactionRunning){
+                threadedTransaction = new ThreadedTransaction(0,"snake",username, score);
+                threadedTransaction.start();
+                threadedTransactionRunning = true;
+            }
             this.jframe.dispose();
         }
         if(pos[0]==fruta[0] && pos[1]==fruta[1]){

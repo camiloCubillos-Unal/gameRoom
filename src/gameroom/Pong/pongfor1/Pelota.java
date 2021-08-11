@@ -2,6 +2,7 @@
 package gameroom.Pong.pongfor1;
 
 import gameroom.bdGestor.Bd_gestor;
+import gameroom.bdGestor.ThreadedTransaction;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.sql.SQLException;
@@ -15,14 +16,14 @@ public class Pelota {
     private final int ancho=15, alto=15;
     private String username;
     public static boolean finJuego = false;
-    private Bd_gestor bdGestor;
+    private ThreadedTransaction threadedTransaction;
+    private boolean threadedTransactionRunning = false;
     private JFrame jframe;
 
     public Pelota(int x, int y, String _username, JFrame _jframe) {
         this.x=x;
         this.y=y;
         this.username = _username;
-        this.bdGestor = new Bd_gestor("ueizgfjgoc2gxumn","u22yMCtXEBlTA4pMsMjI");
         this.jframe = _jframe;
     }
     
@@ -46,7 +47,11 @@ public class Pelota {
         if(y>(margen.getMaxY()-15)){
             cy=-cy;
             finJuego=true;
-            bdGestor.updateScore("pong", username, score);
+            if(!threadedTransactionRunning){
+                threadedTransaction = new ThreadedTransaction(0,"pong", username, score);
+                threadedTransaction.start();
+                threadedTransactionRunning = true;
+            }
             JOptionPane.showMessageDialog(null, "Puntaje: "+score, "GAME OVER!", -1);
             this.jframe.dispose();
         }

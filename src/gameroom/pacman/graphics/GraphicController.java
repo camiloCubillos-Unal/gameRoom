@@ -132,7 +132,7 @@ public class GraphicController extends JPanel {
             }else{
                 graphicPainter.setFont(_gameOverFont);
                 graphicPainter.drawString("GAME OVER", 120, 150);
-                graphicPainter.drawString("SCORE: " + playerController.getScore(), 140, 200);
+                graphicPainter.drawString("SCORE: " + playerController.getScore(), 130, 200);
             }
 
         } catch (InterruptedException ex) {

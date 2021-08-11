@@ -44,12 +44,7 @@ public class Bd_gestor {
         this.bdHost = "jdbc:mysql://btjjrb5hl40a5n82ljro-mysql.services.clever-cloud.com:3306/btjjrb5hl40a5n82ljro";
       
     }
-    
-    public static void main(String[] args) throws ClassNotFoundException, SQLException{
-        //Bd_gestor bd_gestor = new Bd_gestor("ueizgfjgoc2gxumn", "u22yMCtXEBlTA4pMsMjI");    
-        //bd_gestor.updateScore("flappy", 10, 101010);
-    }
-    
+
     public void registerUser(String _username, String _password) throws ClassNotFoundException, ClassNotFoundException, SQLException, SQLException{
         
         
@@ -78,6 +73,8 @@ public class Bd_gestor {
                 if(this.container != null){
                     this.container.dispose();
                 }
+                
+                connection.close();
                 
                 
             }catch (SQLException e) {

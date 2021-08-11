@@ -8,7 +8,6 @@ package gameroom.pacman.graphics;
 import gameroom.pacman.audioController.AudioController;
 import gameroom.pacman.graphics.GraphicController;
 import gameroom.pacman.playerController.PlayerController;
-import gameroom.pacman.testPackage.GraphicControllerTest;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;

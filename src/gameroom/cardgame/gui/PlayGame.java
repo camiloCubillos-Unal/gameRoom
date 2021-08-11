@@ -4,8 +4,9 @@
  */
 package gameroom.cardgame.gui;
 
-import CardGame.auxiliar.LogicaJuego;
+import gameroom.cardgame.auxiliar.LogicaJuego;
 import gameroom.bdGestor.Bd_gestor;
+import gameroom.bdGestor.ThreadedTransaction;
 import java.awt.BorderLayout;
 import java.sql.SQLException;
 import javax.swing.ImageIcon;
@@ -27,13 +28,13 @@ public class PlayGame extends javax.swing.JFrame {
     private boolean primerc = false;
     private int puntaje = 0;
     private String username;
-    private Bd_gestor bdGestor;
+    private ThreadedTransaction threadedTransaction;
+    private boolean threadedTransactionRunning = false;
 
     public PlayGame(String _username) {
         initComponents();
 
         this.username = _username;
-        this.bdGestor = new Bd_gestor("ueizgfjgoc2gxumn", "u22yMCtXEBlTA4pMsMjI");
         fondo = new VFondo(getWidth(), getHeight());
         add(fondo, BorderLayout.CENTER);
         setCards();
@@ -125,7 +126,11 @@ public class PlayGame extends javax.swing.JFrame {
                 && !btnC7.isEnabled() && !btnC8.isEnabled() && !btnC9.isEnabled() && !btnC10.isEnabled() && !btnC11.isEnabled()
                 && !btnC12.isEnabled() && !btnC13.isEnabled() && !btnC14.isEnabled() && !btnC15.isEnabled() && !btnC16.isEnabled()) {
             
-            bdGestor.updateScore("cardgame", username, puntaje);
+            if(!threadedTransactionRunning){
+                threadedTransaction = new ThreadedTransaction(0,"cardgame", username, puntaje);
+                threadedTransaction.start();
+                threadedTransactionRunning = true;
+            }
             JOptionPane.showMessageDialog(this, "Felicidades, usted ha ganado. Su puntaje es: " + puntaje, "Win!!", JOptionPane.INFORMATION_MESSAGE);
         }
     }
@@ -155,7 +160,7 @@ public class PlayGame extends javax.swing.JFrame {
         btnC13 = new javax.swing.JButton();
         btnReiniciar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Juego Dos Caras");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
