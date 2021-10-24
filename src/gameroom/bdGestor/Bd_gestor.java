@@ -111,7 +111,7 @@ public class Bd_gestor {
         return false;
     }
     
-    public ResultSet loginUser(String _username) throws SQLException, ClassNotFoundException{
+     public ResultSet loginUser(String _username) throws SQLException, ClassNotFoundException{
         
         
         Class.forName("com.mysql.cj.jdbc.Driver");
